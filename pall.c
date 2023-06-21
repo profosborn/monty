@@ -11,8 +11,10 @@ void f_pall(stack_t **head, unsigned int counter)
 
     (void) counter;
 
-    current_node = *head;
+    if (*head == NULL)
+        return;
 
+    current_node = *head;
     while (current_node != NULL)
     {
         printf("%d\n", current_node->n);
