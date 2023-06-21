@@ -10,10 +10,10 @@ bus_t bus = {NULL, NULL, NULL, 0};
  */
 int main(int argc, char *argv[])
 {
-    char *content = NULL;
+    char *content;
     FILE *file;
     size_t size = 0;
-    ssize_t read_line = 0;
+    char *read_line = NULL;
     stack_t *stack = NULL;
     unsigned int counter = 0;
 
@@ -32,18 +32,17 @@ int main(int argc, char *argv[])
         exit(EXIT_FAILURE);
     }
 
-    while ((read_line = getline(&content, &size, file)) != -1)
+    while ((read_line = fgets(content, size, file)) != NULL)
     {
-        bus.content = content;
+        content = NULL;
+        size = 0;
         counter++;
 
-        if (read_line > 0)
-        {
-            execute(content, &stack, counter, file);
-        }
+        execute(read_line, &stack, counter, file);
+
+        free(content);
     }
 
-    free(content);
     free_stack(stack);
     fclose(file);
 
