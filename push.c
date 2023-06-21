@@ -38,6 +38,15 @@ void f_push(stack_t **head, unsigned int counter)
 
 	value = atoi(bus.arg);
 
+	if (value == 0 && strcmp(bus.arg, "0") != 0)
+	{
+		fprintf(stderr, "L%u: usage: push integer\n", counter);
+		fclose(bus.file);
+		free(bus.content);
+		free_stack(*head);
+		exit(EXIT_FAILURE);
+	}
+
 	if (bus.lifi == 0)
 		addnode(head, value);
 	else
