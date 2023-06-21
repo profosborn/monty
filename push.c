@@ -1,5 +1,3 @@
-#include "monty.h"
-
 /**
  * f_push - Pushes an element onto the stack or queue.
  * @head: Pointer to the head of the stack or queue.
@@ -7,36 +5,25 @@
  */
 void f_push(stack_t **head, unsigned int counter)
 {
-	int value, i = 0, flag = 0;
+	int value, i = 0;
 
-	if (bus.arg)
-	{
-		if (bus.arg[0] == '-')
-			i++;
-
-		while (bus.arg[i] != '\0')
-		{
-			if (!isdigit(bus.arg[i]))
-				flag = 1;
-			i++;
-		}
-
-		if (flag == 1)
-		{
-			fprintf(stderr, "L%d: usage: push integer\n", counter);
-			fclose(bus.file);
-			free(bus.content);
-			free_stack(*head);
-			exit(EXIT_FAILURE);
-		}
-	}
-	else
+	if (!bus.arg)
 	{
 		fprintf(stderr, "L%d: usage: push integer\n", counter);
-		fclose(bus.file);
-		free(bus.content);
-		free_stack(*head);
 		exit(EXIT_FAILURE);
+	}
+
+	if (bus.arg[0] == '-')
+		i++;
+
+	while (bus.arg[i] != '\0')
+	{
+		if (!isdigit(bus.arg[i]))
+		{
+			fprintf(stderr, "L%d: usage: push integer\n", counter);
+			exit(EXIT_FAILURE);
+		}
+		i++;
 	}
 
 	value = atoi(bus.arg);
