@@ -4,7 +4,7 @@ bus_t bus = {NULL, NULL, NULL, 0};
 
 /**
  * main - Monty code interpreter
- * @argc: number of arguments
+ * @argc: Number of arguments
  * @argv: Monty file location
  * Return: 0 on success
  */
@@ -13,6 +13,7 @@ int main(int argc, char *argv[])
     char *content = NULL;
     FILE *file;
     size_t size = 0;
+    ssize_t read_line = 0;
     stack_t *stack = NULL;
     unsigned int counter = 0;
 
@@ -31,17 +32,18 @@ int main(int argc, char *argv[])
         exit(EXIT_FAILURE);
     }
 
-    while (getline(&content, &size, file) != -1)
+    while ((read_line = getline(&content, &size, file)) != -1)
     {
         bus.content = content;
         counter++;
 
-        execute(content, &stack, counter, file);
-
-        free(content);
-        content = NULL;
+        if (read_line > 0)
+        {
+            execute(content, &stack, counter, file);
+        }
     }
 
+    free(content);
     free_stack(stack);
     fclose(file);
 
