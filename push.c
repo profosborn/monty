@@ -7,9 +7,10 @@
  */
 void f_push(stack_t **head, unsigned int counter)
 {
+	int value, i = 0;
+
 	if (bus.arg)
 	{
-		int i = 0;
 		if (bus.arg[0] == '-')
 			i++;
 
@@ -17,7 +18,7 @@ void f_push(stack_t **head, unsigned int counter)
 		{
 			if (!isdigit(bus.arg[i]))
 			{
-				fprintf(stderr, "L%d: usage: push integer\n", counter);
+				fprintf(stderr, "L%u: usage: push integer\n", counter);
 				fclose(bus.file);
 				free(bus.content);
 				free_stack(*head);
@@ -25,15 +26,20 @@ void f_push(stack_t **head, unsigned int counter)
 			}
 			i++;
 		}
-
-		addnode(head, atoi(bus.arg));
 	}
 	else
 	{
-		fprintf(stderr, "L%d: usage: push integer\n", counter);
+		fprintf(stderr, "L%u: usage: push integer\n", counter);
 		fclose(bus.file);
 		free(bus.content);
 		free_stack(*head);
 		exit(EXIT_FAILURE);
 	}
+
+	value = atoi(bus.arg);
+
+	if (bus.lifi == 0)
+		addnode(head, value);
+	else
+		addqueue(head, value);
 }
