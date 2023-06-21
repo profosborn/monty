@@ -9,37 +9,37 @@
  */
 void f_mod(stack_t **head, unsigned int counter)
 {
-    stack_t *current;
-    int stack_size = 0, remainder;
+	stack_t *current;
+	int stack_size = 0, remainder;
 
-    current = *head;
-    while (current)
-    {
-        current = current->next;
-        stack_size++;
-    }
+	current = *head;
+	while (current)
+	{
+		current = current->next;
+		stack_size++;
+	}
 
-    if (stack_size < 2)
-    {
-        fprintf(stderr, "L%d: Unable to perform modulo, stack is too short\n", counter);
-        fclose(bus.file);
-        free(bus.content);
-        free_stack(*head);
-        exit(EXIT_FAILURE);
-    }
+	if (stack_size < 2)
+	{
+		fprintf(stderr, "L%d: can't mod, stack too short\n", counter);
+		fclose(bus.file);
+		free(bus.content);
+		free_stack(*head);
+		exit(EXIT_FAILURE);
+	}
 
-    current = *head;
-    if (current->n == 0)
-    {
-        fprintf(stderr, "L%d: Division by zero\n", counter);
-        fclose(bus.file);
-        free(bus.content);
-        free_stack(*head);
-        exit(EXIT_FAILURE);
-    }
+	current = *head;
+	if (current->n == 0)
+	{
+		fprintf(stderr, "L%d: division by zero\n", counter);
+		fclose(bus.file);
+		free(bus.content);
+		free_stack(*head);
+		exit(EXIT_FAILURE);
+	}
 
-    remainder = current->next->n % current->n;
-    current->next->n = remainder;
-    *head = current->next;
-    free(current);
+	remainder = current->next->n % current->n;
+	current->next->n = remainder;
+	*head = current->next;
+	free(current);
 }
