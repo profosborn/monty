@@ -7,31 +7,48 @@
  */
 void f_push(stack_t **head, unsigned int counter)
 {
-    int value;
+	int value, i = 0;
 
-    if (bus.arg)
-    {
-        if (!isdigit(*bus.arg) && *bus.arg != '-' && *bus.arg != '+')
-        {
-            fprintf(stderr, "L%u: usage: push integer\n", counter);
-            fclose(bus.file);
-            free(bus.content);
-            free_stack(*head);
-            exit(EXIT_FAILURE);
-        }
+	if (bus.arg)
+	{
+		if (bus.arg[0] == '-')
+			i++;
 
-        value = atoi(bus.arg);
-        if (bus.lifo == 0)
-            addnode(head, value); // Add to the top of the stack (LIFO)
-        else
-            addqueue(head, value); // Add to the end of the stack (FIFO)
-    }
-    else
-    {
-        fprintf(stderr, "L%u: usage: push integer\n", counter);
-        fclose(bus.file);
-        free(bus.content);
-        free_stack(*head);
-        exit(EXIT_FAILURE);
-    }
+		while (bus.arg[i] != '\0')
+		{
+			if (!isdigit(bus.arg[i]))
+			{
+				fprintf(stderr, "L%u: usage: push integer\n", counter);
+				fclose(bus.file);
+				free(bus.content);
+				free_stack(*head);
+				exit(EXIT_FAILURE);
+			}
+			i++;
+		}
+	}
+	else
+	{
+		fprintf(stderr, "L%u: usage: push integer\n", counter);
+		fclose(bus.file);
+		free(bus.content);
+		free_stack(*head);
+		exit(EXIT_FAILURE);
+	}
+
+	value = atoi(bus.arg);
+
+	if (value == 0 && strcmp(bus.arg, "0") != 0)
+	{
+		fprintf(stderr, "L%u: usage: push integer\n", counter);
+		fclose(bus.file);
+		free(bus.content);
+		free_stack(*head);
+		exit(EXIT_FAILURE);
+	}
+
+	if (bus.lifi == 0)
+		addnode(head, value);
+	else
+		addqueue(head, value);
 }
